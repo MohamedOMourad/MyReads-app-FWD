@@ -1,7 +1,8 @@
 import React from 'react'
 import BookShelf from '../Component/BookShelf'
+import { selectShelf } from '../utils/Functions'
 
-const Home = () => {
+const Home = ({ books }) => {
     return (
         <div className="list-books">
             <div className="list-books-title">
@@ -9,9 +10,9 @@ const Home = () => {
             </div>
             <div className="list-books-content">
                 <div>
-                    <BookShelf shelfName={'Currently Reading'} />
-                    <BookShelf shelfName={'Want To Read'} />
-                    <BookShelf shelfName={'Read'} />
+                    <BookShelf books={selectShelf(books, 'Currently Reading')} shelfName={'Currently Reading'} />
+                    <BookShelf books={selectShelf(books, 'Want To Read')} shelfName={'Want To Read'} />
+                    <BookShelf books={selectShelf(books, 'Read')} shelfName={'Read'} />
                 </div>
             </div>
             <div className="open-search">

@@ -1,10 +1,24 @@
-import React from 'react'
+import { useEffect, useState } from "react";
+import { selectShelf } from '../utils/Functions';
+import Book from "./Book";
 
-const BookShelf = ({ shelfName }) => {
+
+const BookShelf = ({ books, shelfName }) => {
+    // const [shelfBooks, setShelfBooks] = useState();
+
+    // useEffect(() => {
+    //     selectShelf(books, shelfName, setShelfBooks)
+    // }, [])
+    console.log(books);
     return (
         <div className="bookshelf">
             <h2 className="bookshelf-title">{shelfName}</h2>
             <div className="bookshelf-books">
+                <ol className="books-grid">
+                    {books ? books.map(book => {
+                        return (<Book />)
+                    }) : <p>loading...</p>}
+                </ol>
             </div>
         </div>
     )
@@ -12,7 +26,6 @@ const BookShelf = ({ shelfName }) => {
 
 export default BookShelf
 
-                // <ol className="books-grid">
                 //     <li>
                 //         <div className="book">
                 //             <div className="book-top">

@@ -18,8 +18,8 @@ export const get = async (bookId) => {
 
 export const getAll = async (setBooks) => {
   const res = await API.get(`/books`, { headers });
-  setBooks(res.data.books)
   console.log(res.data.books)
+  setBooks(res.data.books)
 }
 
   // fetch(`${api}/books`, { headers })
