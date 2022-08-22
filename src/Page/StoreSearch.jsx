@@ -12,9 +12,12 @@ const StoreSearch = ({ setAllBooks }) => {
         if (query) {
             search(query)
                 .then((response) => {
-                    // used to deal with inconsistent api like this response {error: "empty query", items: []}
-                    if (!Array.isArray(response)) setSearchResult([])
-                    else setSearchResult(response)
+                    if (Array.isArray(response)) {
+                        setSearchResult(response)
+                    }
+                    else {
+                        setSearchResult([])
+                    }
                 })
                 .catch((error) => {
                     console.log(error)
