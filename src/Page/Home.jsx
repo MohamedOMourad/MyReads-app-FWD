@@ -1,8 +1,10 @@
-import React from 'react'
-import BookShelf from '../Component/BookShelf'
-import { selectShelf } from '../utils/Functions'
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import BookShelf from '../Component/BookShelf';
+import { selectShelf } from '../utils/Functions';
 
-const Home = ({ books }) => {
+const Home = ({ setAllBooks, allBooks }) => {
+    const navigate = useNavigate()
     return (
         <div className="list-books">
             <div className="list-books-title">
@@ -10,13 +12,13 @@ const Home = ({ books }) => {
             </div>
             <div className="list-books-content">
                 <div>
-                    <BookShelf books={selectShelf(books, 'Currently Reading')} shelfName={'Currently Reading'} />
-                    <BookShelf books={selectShelf(books, 'Want To Read')} shelfName={'Want To Read'} />
-                    <BookShelf books={selectShelf(books, 'Read')} shelfName={'Read'} />
+                    <BookShelf setAllBooks={setAllBooks} books={selectShelf(allBooks, 'Currently Reading')} shelfName={'Currently Reading'} />
+                    <BookShelf setAllBooks={setAllBooks} books={selectShelf(allBooks, 'Want To Read')} shelfName={'Want To Read'} />
+                    <BookShelf setAllBooks={setAllBooks} books={selectShelf(allBooks, 'Read')} shelfName={'Read'} />
                 </div>
             </div>
             <div className="open-search">
-                {/* <a onClick={() => setShowSearchPage(!showSearchPage)}>Add a book</a> */}
+                <a onClick={() => navigate('/store')}>Add a book</a>
             </div>
         </div>
     )

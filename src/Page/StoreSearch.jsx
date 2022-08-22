@@ -1,12 +1,34 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
+import { search } from '../BooksAPI';
+import { useState } from "react";
+import Book from '../Component/Book';
 
-const StoreSearch = () => {
+const StoreSearch = ({ setAllBooks }) => {
+    const navigate = useNavigate();
+    const [searchResult, setSearchResult] = useState([]);
+
+    const getQuery = (query) => {
+        if (query) {
+            search(query)
+                .then((response) => {
+                    // used to deal with inconsistent api like this response {error: "empty query", items: []}
+                    if (!Array.isArray(response)) setSearchResult([])
+                    else setSearchResult(response)
+                })
+                .catch((error) => {
+                    console.log(error)
+                    setSearchResult([])
+                })
+        }
+    }
+
     return (
         <div className="search-books">
             <div className="search-books-bar">
                 <a
                     className="close-search"
-                    onClick={() => setShowSearchPage(!showSearchPage)}
+                    onClick={() => navigate('/')}
                 >
                     Close
                 </a>
@@ -14,14 +36,26 @@ const StoreSearch = () => {
                     <input
                         type="text"
                         placeholder="Search by title, author, or ISBN"
+                        onChange={(event) => {
+                            getQuery(event.target.value)
+                        }}
                     />
                 </div>
             </div>
             <div className="search-books-results">
-                <ol className="books-grid"></ol>
+                <ol className="books-grid">
+                    {searchResult?.map((book) => (
+                        <li key={book.id}>
+                            <Book
+                                book={book}
+                                setAllBooks={setAllBooks}
+                            />
+                        </li>
+                    ))}
+                </ol>
             </div>
         </div>
     )
 }
 
-export default StoreSearch
+export default StoreSearch;

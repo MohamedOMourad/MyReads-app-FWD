@@ -1,49 +1,47 @@
-import axios from "axios";
+const api = 'https://reactnd-books-api.udacity.com'
 
-const API = axios.create({ baseURL: 'https://reactnd-books-api.udacity.com' })
-
-let token = localStorage.token;
-
-if (!token) token = localStorage.token = Math.random().toString(36).substr(-8);
+// Generate a unique token for storing your bookshelf data on the backend server.
+let token = localStorage.token
+if (!token)
+  token = localStorage.token = Math.random()
+    .toString(36)
+    .substr(-8)
 
 const headers = {
-  Accept: "application/json",
-  Authorization: token,
-};
-
-export const get = async (bookId) => {
-  const book = await API.get(`/books/${bookId}`, { headers })
+  Accept: 'application/json',
+  Authorization: token
 }
 
+export const get = (bookId) =>
+  fetch(`${api}/books/${bookId}`, { headers })
+    .then((res) => res.json())
+    .then((data) => data.book)
 
-export const getAll = async (setBooks) => {
-  const res = await API.get(`/books`, { headers });
-  console.log(res.data.books)
-  setBooks(res.data.books)
-}
+export const getAll = (setAllBooks) =>
+  fetch(`${api}/books`, { headers })
+    .then((res) => res.json())
+    .then((data) => data.books).then((books) => setAllBooks(books))
 
-  // fetch(`${api}/books`, { headers })
-  //   .then((res) => res.json())
-  //   .then((data) => data.books);
+export const update = (setAllBooks,book, shelf) =>
+  fetch(`${api}/books/${book.id}`, {
+    method: 'PUT',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ shelf })
+  }).then((res) => res.json()).then(() => {
+    getAll(setAllBooks)
+  })
 
-// export const update = (book, shelf) =>
-//   fetch(`${api}/books/${book.id}`, {
-//     method: "PUT",
-//     headers: {
-//       ...headers,
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ shelf }),
-//   }).then((res) => res.json());
-
-// export const search = (query, maxResults) =>
-//   fetch(`${api}/search`, {
-//     method: "POST",
-//     headers: {
-//       ...headers,
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify({ query, maxResults }),
-//   })
-//     .then((res) => res.json())
-//     .then((data) => data.books);
+export const search = (query) =>
+  fetch(`${api}/search`, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ query })
+  })
+    .then((res) => res.json())
+    .then((data) => data.books)
