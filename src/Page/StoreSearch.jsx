@@ -4,26 +4,24 @@ import { search } from '../BooksAPI';
 import { useState } from "react";
 import Book from '../Component/Book';
 
-const StoreSearch = ({ setAllBooks }) => {
+const StoreSearch = ({ changeBookShelf, selectShelf }) => {
     const navigate = useNavigate();
     const [searchResult, setSearchResult] = useState([]);
 
     const getQuery = (query) => {
-        if (query) {
-            search(query)
-                .then((response) => {
-                    if (Array.isArray(response)) {
-                        setSearchResult(response)
-                    }
-                    else {
-                        setSearchResult([])
-                    }
-                })
-                .catch((error) => {
-                    console.log(error)
+        search(query)
+            .then((response) => {
+                if (Array.isArray(response)) {
+                    setSearchResult(response)
+                }
+                else {
                     setSearchResult([])
-                })
-        }
+                }
+            })
+            .catch((error) => {
+                console.log(error)
+                setSearchResult([])
+            })
     }
 
     return (
@@ -49,10 +47,7 @@ const StoreSearch = ({ setAllBooks }) => {
                 <ol className="books-grid">
                     {searchResult?.map((book) => (
                         <li key={book.id}>
-                            <Book
-                                book={book}
-                                setAllBooks={setAllBooks}
-                            />
+                            <Book changeBookShelf={changeBookShelf} shelf={selectShelf(book.id)} book={book} />
                         </li>
                     ))}
                 </ol>

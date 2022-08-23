@@ -1,7 +1,4 @@
-import { update } from "../BooksAPI";
-
-const Book = ({ setAllBooks, book }) => {
-
+const Book = ({ changeBookShelf, book, shelf }) => {
     return (
         <div className="book">
             <div className="book-top">
@@ -15,8 +12,8 @@ const Book = ({ setAllBooks, book }) => {
                 ></div>
                 <div className="book-shelf-changer">
                     <select
-                        defaultValue={book?.shelf}
-                        onChange={(event) => update(setAllBooks, book, event.target.value)}
+                        defaultValue={shelf}
+                        onChange={(event) => changeBookShelf(book, event.target.value)}
                     >
                         <option value="none" disabled>
                             Move to...
@@ -31,13 +28,13 @@ const Book = ({ setAllBooks, book }) => {
                 </div>
             </div>
             <div className="book-title">{book.title}</div>
-                {book.authors?.map((author) => {
-                    return (
-                        <div className="book-authors" key={author}>
-                            {author}
-                        </div>
-                    )
-                })}
+            {book.authors?.map((author) => {
+                return (
+                    <div className="book-authors" key={author}>
+                        {author}
+                    </div>
+                )
+            })}
         </div>
     )
 }

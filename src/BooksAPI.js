@@ -17,12 +17,12 @@ export const get = (bookId) =>
     .then((res) => res.json())
     .then((data) => data.book)
 
-export const getAll = (setAllBooks) =>
+export const getAll = () =>
   fetch(`${api}/books`, { headers })
     .then((res) => res.json())
-    .then((data) => data.books).then((books) => setAllBooks(books))
+    .then((data) => data.books)
 
-export const update = (setAllBooks,book, shelf) =>
+export const update = (book, shelf) =>
   fetch(`${api}/books/${book.id}`, {
     method: 'PUT',
     headers: {
@@ -30,9 +30,7 @@ export const update = (setAllBooks,book, shelf) =>
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({ shelf })
-  }).then((res) => res.json()).then(() => {
-    getAll(setAllBooks)
-  })
+  }).then((res) => res.json())
 
 export const search = (query) =>
   fetch(`${api}/search`, {
